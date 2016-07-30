@@ -1,0 +1,175 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty}
+
+\usepackage{xcolor} % Required for listings color definitions
+\usepackage{listings} % computer code language formatting
+\definecolor{Brown}{cmyk}{0,0.81,1,0.60}
+\definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+\definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+\definecolor{lightlightgray}{gray}{0.9}
+
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=blue
+}
+
+\lstdefinestyle{tex-style} {
+	language=[LaTeX]TeX,                    % Code langugage
+	basicstyle=\ttfamily,                   % Code font, Examples: \footnotesize, \ttfamily
+	%keywordstyle=\color{OliveGreen},        % Keywords font ('*' = uppercase)
+	commentstyle=\color{gray},              % Comments font
+	numbers=none,                           % Line nums position
+	numberstyle=\tiny,                      % Line-numbers fonts
+	stepnumber=1,                           % Step between two line-numbers
+	numbersep=5pt,                          % How far are line-numbers from code
+	backgroundcolor=\color{lightlightgray}, % Choose background color
+	frame=single,                             % A frame around the code
+	tabsize=2,                              % Default tab size
+	captionpos=b,                           % Caption-position = bottom
+	breaklines=true,                        % Automatic line breaking?
+	breakatwhitespace=false,                % Automatic breaks only at whitespace?
+	showspaces=false,                       % Dont make spaces visible
+	showtabs=false,                         % Dont make tabls visible
+	columns=flexible,                       % Column format
+	morekeywords={__global__, __device__}  % CUDA specific keywords
+}
+\lstset{style=tex-style}
+
+\usepackage{tikz}
+\usetikzlibrary{trees,decorations.markings}
+
+\begin{document}
+	
+	\section*{File System Structure}
+	
+	\subsection*{Description}
+	A tree file system graphical structure is generated, drawn as a tikz image. The trees tikz library is used to build the structure.
+	
+	\subsection*{Sources}
+	\sloppy
+	\url{http://tex.stackexchange.com/questions/306415/connecting-tree-nodes-with-double-arrows-a-la-chef?newsletter=1&nlcode=544695%7c921f}
+		
+	\subsection*{Used Packages}
+	\verb|tikz|
+	
+	\subsection*{Preamble}
+	\begin{lstlisting}
+\documentclass[class=article, crop=false]{standalone}
+		
+\usepackage{tikz}
+\usetikzlibrary{trees,decorations.markings}
+	\end{lstlisting}
+	
+	\subsection*{Example Code}
+	\begin{lstlisting}
+\tikzstyle{every node}=[draw=black,thick,anchor=west]
+\tikzstyle{selected}=[draw=red,fill=red!30]
+\tikzstyle{optional}=[dashed,fill=gray!50]
+
+\newcommand{\arrowcolor}{red}
+\newcommand{\arrowfillcolor}{white}
+
+\pgfdeclarelayer{front}
+\pgfsetlayers{main,front}
+
+\makeatletter
+\pgfkeys{%
+/tikz/path on layer/.code={
+\def\tikz@path@do@at@end{\endpgfonlayer\endgroup\tikz@path@do@at@end}%
+\pgfonlayer{#1}\begingroup%
+}%
+}
+\makeatother
+
+\begin{tikzpicture}[%
+rightarr/.pic={\path[pic actions] (-0.4,0)--(-1,-0.35)--(-1,.35)--cycle;},
+grow via three points={one child at (0.5,-0.7) and
+two children at (0.5,-0.7) and (0.5,-1.4)},
+edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)},
+edge from parent/.style={
+decoration={
+markings,
+mark=at position 1 with{\coordinate (0, 0) pic[\arrowcolor,fill=\arrowfillcolor,scale=0.22]{rightarr};},
+},
+draw = \arrowcolor,
+line width = 3pt,
+shorten >= 5.7pt,
+shorten <= 2pt,
+postaction = {decorate},
+postaction = {draw,line width=1.4pt,white,path on layer=front},
+}]
+\node {texmf}
+child { node {doc}}     
+child { node {fonts}}
+child { node {source}}
+child { node [selected] {tex}
+child { node {generic}}
+child { node [optional] {latex}}
+child { node {plain}}
+}
+child [missing] {}                      
+child [missing] {}                      
+child [missing] {}                      
+child { node {texdoc}};
+\end{tikzpicture}
+	\end{lstlisting}
+	
+	\subsection*{Example Result}
+		\tikzstyle{every node}=[draw=black,thick,anchor=west]
+		\tikzstyle{selected}=[draw=red,fill=red!30]
+		\tikzstyle{optional}=[dashed,fill=gray!50]
+		
+		\newcommand{\arrowcolor}{red}
+		\newcommand{\arrowfillcolor}{white}
+		
+		\pgfdeclarelayer{front}
+		\pgfsetlayers{main,front}
+		
+		\makeatletter
+		\pgfkeys{%
+			/tikz/path on layer/.code={
+				\def\tikz@path@do@at@end{\endpgfonlayer\endgroup\tikz@path@do@at@end}%
+				\pgfonlayer{#1}\begingroup%
+			}%
+		}
+		\makeatother
+		
+		\begin{tikzpicture}[%
+		rightarr/.pic={\path[pic actions] (-0.4,0)--(-1,-0.35)--(-1,.35)--cycle;},
+		grow via three points={one child at (0.5,-0.7) and
+			two children at (0.5,-0.7) and (0.5,-1.4)},
+		edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)},
+		edge from parent/.style={
+			decoration={
+				markings,
+				mark=at position 1 with{\coordinate (0, 0) pic[\arrowcolor,fill=\arrowfillcolor,scale=0.22]{rightarr};},
+			},
+			draw = \arrowcolor,
+			line width = 3pt,
+			shorten >= 5.7pt,
+			shorten <= 2pt,
+			postaction = {decorate},
+			postaction = {draw,line width=1.4pt,white,path on layer=front},
+		}]
+		\node {texmf}
+		child { node {doc}}     
+		child { node {fonts}}
+		child { node {source}}
+		child { node [selected] {tex}
+			child { node {generic}}
+			child { node [optional] {latex}}
+			child { node {plain}}
+		}
+		child [missing] {}                      
+		child [missing] {}                      
+		child [missing] {}                      
+		child { node {texdoc}};
+		\end{tikzpicture}
+\end{document}

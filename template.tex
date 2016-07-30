@@ -1,0 +1,71 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty}
+
+\usepackage{xcolor} % Required for listings color definitions
+\definecolor{Brown}{cmyk}{0,0.81,1,0.60}
+\definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+\definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+\definecolor{lightlightgray}{gray}{0.9}
+
+\usepackage{listings} % computer code language formatting
+
+\lstdefinestyle{tex-style} {
+	language=TeX,                           % Code langugage
+	basicstyle=\ttfamily,                   % Code font, Examples: \footnotesize, \ttfamily
+	%keywordstyle=\color{OliveGreen},        % Keywords font ('*' = uppercase)
+	commentstyle=\color{gray},              % Comments font
+	numbers=none,                           % Line nums position
+	numberstyle=\tiny,                      % Line-numbers fonts
+	stepnumber=1,                           % Step between two line-numbers
+	numbersep=5pt,                          % How far are line-numbers from code
+	backgroundcolor=\color{lightlightgray}, % Choose background color
+	frame=single,                             % A frame around the code
+	tabsize=2,                              % Default tab size
+	captionpos=b,                           % Caption-position = bottom
+	breaklines=true,                        % Automatic line breaking?
+	breakatwhitespace=false,                % Automatic breaks only at whitespace?
+	showspaces=false,                       % Dont make spaces visible
+	showtabs=false,                         % Dont make tabls visible
+	columns=flexible,                       % Column format
+	morekeywords={__global__, __device__}  % CUDA specific keywords
+}
+\lstset{style=tex-style}
+
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=blue
+}
+
+\begin{document}
+	
+	\section*{Template}
+	
+	\subsection*{Description}
+	
+	\subsection*{Sources}
+	\sloppy
+	\url{}
+		
+	\subsection*{Used Packages}
+	\verb||
+	
+	\subsection*{Preamble}
+	\begin{lstlisting}
+		Preamble code goes here for display
+	\end{lstlisting}
+	
+	\subsection*{Document}
+	\begin{lstlisting}
+		Document code goes here for display
+	\end{lstlisting}
+	
+	\subsection*{Example Result}
+		Document goes here for compilation
+\end{document}

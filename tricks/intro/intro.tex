@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty}
+
+\usepackage{xcolor} % Required for listings color definitions
+\definecolor{Brown}{cmyk}{0,0.81,1,0.60}
+\definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+\definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+\definecolor{lightlightgray}{gray}{0.9}
+
+\usepackage{listings} % computer code language formatting
+
+\lstdefinestyle{tex-style} {
+	language=[LaTeX]TeX,                    % Code langugage
+	basicstyle=\ttfamily,                   % Code font, Examples: \footnotesize, \ttfamily
+	%keywordstyle=\color{OliveGreen},        % Keywords font ('*' = uppercase)
+	commentstyle=\color{gray},              % Comments font
+	numbers=none,                           % Line nums position
+	numberstyle=\tiny,                      % Line-numbers fonts
+	stepnumber=1,                           % Step between two line-numbers
+	numbersep=5pt,                          % How far are line-numbers from code
+	backgroundcolor=\color{lightlightgray}, % Choose background color
+	frame=single,                             % A frame around the code
+	tabsize=2,                              % Default tab size
+	captionpos=b,                           % Caption-position = bottom
+	breaklines=true,                        % Automatic line breaking?
+	breakatwhitespace=false,                % Automatic breaks only at whitespace?
+	showspaces=false,                       % Dont make spaces visible
+	showtabs=false,                         % Dont make tabls visible
+	columns=flexible,                       % Column format
+	morekeywords={__global__, __device__}  % CUDA specific keywords
+}
+\lstset{style=tex-style}
+
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=blue
+}
+
+\begin{document}
+	
+	\section*{Introduction}
+	
+	\subsection*{Description}
+	At some point during my \LaTeX writing life, I decided to put together a portfolio of cool tricks and tips, which I had used in the past or wanted to apply i the future. Something like an index or a portfolio.
+	
+	I wanted that document to consist of multiple small parts, one for each tip, and each part should contain both example code and the complied example. A great deal of searching was done to find a technical solution which would allow for a document which would allow for:
+	\begin{enumerate}
+		\item indexable, possible multi-page examples
+		\item examples to be compiled in isolation, free of package conflicts which would surely emerge in such a document
+		\item a modular structure, with each example be a short .tex file which would be included to the collection
+	\end{enumerate}
+	
+	I did \href{http://tex.stackexchange.com/questions/316454/include-multiple-independent-snippets-of-latex-code}{a related question} a while back on TeX-StackExchange, but there was no good answer.
+	
+	Finally, I managed to get a satisfactory result with the \texttt{pdfpages} package. I put together a template document to be used for each example, compile it and then include the output .pdf to the collection document.
+	
+	The code of the top-level document can be seen below.
+	
+	Enjoy!
+	
+		
+	\subsection*{Used Packages}
+	\verb|pdfpages|
+	
+	\subsection*{Code}
+	\begin{lstlisting}
+\documentclass[onepage]{book}
+
+\usepackage{pdfpages}
+
+\begin{document}
+
+\tableofcontents
+
+\chapter{Preliminaries}
+\includepdf[pages=-, fitpaper=false, addtotoc={1,section,1,Template,sec:template}]{tricks/introduction/introduction.pdf}
+
+<other-includes>
+
+\end{document}
+	\end{lstlisting}
+	
+	Check on the next section for the template code of each section.
+
+\end{document}

@@ -1,0 +1,15 @@
+\documentclass[oneside]{book}
+
+\usepackage{pdfpages}
+
+\begin{document}
+	
+	\tableofcontents
+	
+	\chapter{Preliminaries}
+	\includepdf[pages=-, fitpaper=false, addtotoc={1,section,1,Introduction,sec:intro}]{tricks/intro/intro.pdf}
+	\includepdf[pages=-, fitpaper=false, addtotoc={1,section,1,Template,sec:template}]{tricks/template/template.pdf}
+	
+	\chapter{tikz tricks}
+	\includepdf[pages=-, fitpaper=false, addtotoc={1,section,1,File System Structure,sec:file_system}]{tricks/file_system_structure/file_system_structure.pdf}
+\end{document}
