@@ -1,65 +1,47 @@
 \documentclass{article}
 
 \usepackage[a4paper, total={7in, 9in}]{geometry}
-\pagestyle{empty}
+\pagestyle{empty} % Prevent relative page numbers
 
-\usepackage{xcolor} % Required for listings color definitions
-\definecolor{Brown}{cmyk}{0,0.81,1,0.60}
-\definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
-\definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
-\definecolor{lightlightgray}{gray}{0.9}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
 
-\usepackage{listings} % computer code language formatting
 
-\lstdefinestyle{tex-style} {
-	language=[LaTeX]TeX,                    % Code langugage
-	basicstyle=\ttfamily,                   % Code font, Examples: \footnotesize, \ttfamily
-	%keywordstyle=\color{OliveGreen},        % Keywords font ('*' = uppercase)
-	commentstyle=\color{gray},              % Comments font
-	numbers=none,                           % Line nums position
-	numberstyle=\tiny,                      % Line-numbers fonts
-	stepnumber=1,                           % Step between two line-numbers
-	numbersep=5pt,                          % How far are line-numbers from code
-	backgroundcolor=\color{lightlightgray}, % Choose background color
-	frame=single,                             % A frame around the code
-	tabsize=2,                              % Default tab size
-	captionpos=b,                           % Caption-position = bottom
-	breaklines=true,                        % Automatic line breaking?
-	breakatwhitespace=false,                % Automatic breaks only at whitespace?
-	showspaces=false,                       % Dont make spaces visible
-	showtabs=false,                         % Dont make tabls visible
-	columns=flexible,                       % Column format
-	morekeywords={__global__, __device__}  % CUDA specific keywords
-}
-\lstnewenvironment{latex}
-{\lstset{language=[LaTeX]TeX}}
-{}
-\lstset{style=tex-style}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
 
-\usepackage[hyphens]{url}
-\usepackage{hyperref}
-\hypersetup{
-	colorlinks=true,
-	citecolor=black,
-	filecolor=black,
-	linkcolor=blue,
-	urlcolor=blue
-}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
 
 \begin{document}
 	
+	%% CHANGE THIS: Section title
 	\section*{Template}
 	
+	%% CHANGE THIS: Section description
 	\subsection*{Description}
 	A uniform template is useful to keep all the tips and examples of this portfolio consistent and searchable. The related code, both for the preamble and the document, as well as the compiled examples are provided in separate sections.
 	
 	For this section, the template code is presented.
-		
+	
+	To create a new trick:
+	\begin{enumerate}
+		\item Create a new folder inside the tricks subfolder
+		\item Copy the code presented in the \textit{Document} subsection into a new \texttt{root.tex} document
+		\item Build that \texttt{root.tex} document
+		\item Add an entry to the \texttt{portfolio.tex} overarching document and compile it
+	\end{enumerate}
+	
+	%% CHANGE THIS: List the used packages
 	\subsection*{Used Packages}
 	\verb|xcolor, listings, url, hyperref|
 	
+	%% CHANGE THIS: Paste your document preamble inside the latex environment to show its code
 	\subsection*{Preamble}
-	\begin{lstlisting}
+	\begin{latex}
 		\documentclass{article}
 		
 		\usepackage[a4paper, total={7in, 9in}]{geometry}
@@ -104,10 +86,30 @@
 		linkcolor=blue,
 		urlcolor=blue
 		}
-	\end{lstlisting}
+	\end{latex}
 	
 	\subsection*{Document}
-	\begin{latex}	
+	\begin{lstlisting}
+			\documentclass{article}
+			
+			\usepackage[a4paper, total={7in, 9in}]{geometry}
+			\pagestyle{empty} % Prevent relative page numbers
+			
+			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			%% Default definitions 
+			\input{../default-setup}
+			
+			
+			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			%% Example-specific packages
+			
+			
+			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			%% Example-specific preamble
+			
+			
+			\begin{document}
+		
 			\section*{<example-title>}
 			
 			\subsection*{Description}
@@ -115,22 +117,26 @@
 			
 			\subsection*{Sources}
 			\textit{<add reference sources here>}
+			\url{<or paste a url>}
 			
 			\subsection*{Used Packages}
 			\verb|<state-the-required-packages-here|
 			
 			\subsection*{Preamble}
-			\begin{lstlisting}
+			\begin{latex}
 			<paste-the-example-related-preamble-code-here>
-			\end{lstlisting}
+			\end{latex}
 			
 			\subsection*{Document}
-			\begin{lstlisting}
+			\begin{latex}
 			<paste-the-document-code-here-for-presentation>
-			\end{lstlisting}
+			\end{latex}
 			
-			\subsection*{Example Result}
-			<paste-the-example-document-code-here-for-compilation>
-	\end{latex}
+			\subsection*{Result}
+			<write-the-example-document-code-here-for-compilation>
+			
+			\end{document}
+	\end{lstlisting}
+	
 
 \end{document}

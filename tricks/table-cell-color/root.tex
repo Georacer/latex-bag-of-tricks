@@ -1,0 +1,76 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
+
+\begin{document}
+
+\section*{Colors in table elements}
+
+\subsection*{Description}
+Sometimes tables need some color in them. The \texttt{colortbl} package offers some nice functionalities and works with \texttt{tabularx} as well.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/50349/color-only-a-cell-of-a-table}
+
+\subsection*{Used Packages}
+\verb|colortbl|
+
+\subsection*{Preamble}
+\begin{latex}
+\usepackage[table]{xcolor} % table option invokes the colortbl package
+\usepackage{tabularx}
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+	\centering
+	\begin{tabularx}{0.5\linewidth}{%
+			>{\columncolor{gray!80}[.5\tabcolsep]}l%
+			|%
+			>{\columncolor{white}[.5\tabcolsep]}X%
+			!{\color{blue}\vline}
+			@{\color{blue!50}\vrule width \doublerulesep}
+			!{\color{blue}\vline}%
+			>{\columncolor{white}[.5\tabcolsep]}r%
+		}
+		\textbf{Header 1}                          & \textbf{Header 2}           & \textbf{Header 3} \\ \hline
+		Some                                       & \cellcolor{blue!25}coloured & contents          \\ \hline
+		\rowcolor{red!25}	And                    & some                        & more              \\
+		\rowcolor{red!25}	\cellcolor{gray!80}And & some                                 & more
+\end{latex}
+
+\subsection*{Result}
+\centering
+\begin{tabularx}{0.5\linewidth}{%
+		>{\columncolor{gray!80}[.5\tabcolsep]}l%
+		|%
+		>{\columncolor{white}[.5\tabcolsep]}X%
+		!{\color{blue}\vline}
+		@{\color{blue!50}\vrule width \doublerulesep}
+		!{\color{blue}\vline}%
+		>{\columncolor{white}[.5\tabcolsep]}r%
+		}
+	\textbf{Header 1}                          & \textbf{Header 2}           & \textbf{Header 3} \\ \hline
+	Some                                       & \cellcolor{blue!25}coloured & contents          \\ \hline
+	\rowcolor{red!25}	And                    & some                        & more              \\ \hline
+	\rowcolor{red!25}	\cellcolor{gray!80}And & some                        & more
+\end{tabularx}
+
+\end{document}

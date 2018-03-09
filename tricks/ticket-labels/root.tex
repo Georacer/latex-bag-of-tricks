@@ -1,0 +1,166 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+%\usepackage[tdf-file]{ticket}
+\usepackage[cutmark, rowmode]{ticket}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% Define key quantities
+\newcommand{\labelWidth}{80}
+\newcommand{\labelHeight}{60}
+\newcommand{\labelSepHeight}{12}
+\newcommand{\imageHeight}{45}
+
+% Setup the ticket package lengths
+\unitlength = 1mm
+\ticketSize{80}{60}
+\ticketNumbers{2}{4}
+\ticketDistance{0}{0}
+
+% Define the default ticket background
+\renewcommand{\ticketdefault}{%
+	\put(0,0){%
+		\begin{tikzpicture}[x=1mm, y=1mm]
+%			% Add temporary grid for easier positioning of elements
+%			\draw [gray!50, step=10] (0,0) grid + (\labelWidth,\labelHeight);
+%			\node (zeroMark) at (2,2) {0};
+			
+			% Draw a frame
+			\draw (0,0) -- %
+			(\labelWidth, 0) --%
+			(\labelWidth, \labelHeight) --%
+			(0, \labelHeight) --%
+			cycle;
+			% Draw the horizontal line
+			\draw (0, \labelHeight-\labelSepHeight) -- (\labelWidth, \labelHeight-\labelSepHeight);
+		\end{tikzpicture}
+		}
+}
+
+% Define the ticket content
+\newcommand{\myLabel}[2]{\ticket{%
+		\put(0, 0){%
+			\begin{tikzpicture}[x=1mm, y=1mm]
+			\node[anchor=center] (title) at (0.5*\labelWidth, \labelHeight-0.6*\labelSepHeight) {\Huge\textbf{#1}};
+			\node[anchor=center] (img) at (0.5*\labelWidth, 0.5*\labelHeight-0.5*\labelSepHeight ) {\includegraphics[height=\imageHeight mm]{#2}};
+			\node at (80, 60) {};
+			\node at (0, 0) {};
+			\end{tikzpicture}}%
+	}
+}
+
+\begin{document}
+
+\section*{Custom Labels}
+
+\subsection*{Description}
+I wanted an easy-ish way to make and print labels for some storage boxes I use. I had tried tables in MS Word, and while dimensions and images are straightforward to build, it requires a lot of mouse clicking, dragging and typing, each time I want to make a new label.
+
+The \textit{ticket} pakage provides some amenities to do that.
+The philosophy behind it is that
+\begin{enumerate}
+	\item you define some key lengths in the preamble, pertaining to the label geometry
+	\item you define a default ticket background, placing there any content which is common to all tickets
+	\item you define a ticket, which places the passed arguments appropriately for each label
+\end{enumerate}
+Then, you call the \texttt{ticket} command for each new label you want to make.
+
+In theory, this allows you to parse \texttt{.csv} files and turn their contents into labels (e.g. for conference badges).
+
+Read the annotated code for more insight.
+
+\subsection*{Sources}
+\url{http://mirror.utexas.edu/ctan/macros/latex/contrib/ticket/doc/manual.pdf}
+
+\subsection*{Used Packages}
+\verb|ticket, graphicx, tikz|
+
+\subsection*{Preamble}
+\begin{latex}
+	% Define key quantities
+	% These are used to manually draw geometry
+	\newcommand{\labelWidth}{80}
+	\newcommand{\labelHeight}{60}
+	\newcommand{\labelSepHeight}{12}
+	\newcommand{\imageHeight}{45}
+	
+	% Setup the ticket package lengths
+	% These are used by the ticket package
+	\unitlength = 1mm % Used unit
+	\ticketSize{80}{60} % label dimensions in \unitlength
+	\ticketNumbers{2}{4} % number of labels in each page
+	\ticketDistance{0}{0} % separation between each label. I selected 0 to cut both edges at once
+	
+	% Define the default ticket background
+	% I used a single tikzpicture to draw the default layout. In theory you could use multiple separate \put commands, but I found the coordinate system awkward.
+	\renewcommand{\ticketdefault}{%
+		\put(0,0){%
+			\begin{tikzpicture}[x=1mm, y=1mm] % It helps turning tikz units into real mms for easier reference
+			%			% Add temporary grid for easier positioning of elements
+			%			\draw [gray!50, step=10] (0,0) grid + (\labelWidth,\labelHeight);
+			%			\node (zeroMark) at (2,2) {0};
+			
+			% Draw a frame
+			\draw (0,0) -- %
+			(\labelWidth, 0) --%
+			(\labelWidth, \labelHeight) --%
+			(0, \labelHeight) --%
+			cycle;
+			% Draw the horizontal line
+			\draw (0, \labelHeight-\labelSepHeight) -- (\labelWidth, \labelHeight-\labelSepHeight);
+			\end{tikzpicture}
+		}
+	}
+	
+	% Define the ticket content
+	\newcommand{\myLabel}[2]{\ticket{%
+			\put(0, 0){%
+				\begin{tikzpicture}[x=1mm, y=1mm]
+				% Draw the lable title
+				\node[anchor=center] (title) at (0.5*\labelWidth, \labelHeight-0.6*\labelSepHeight) {\Huge\textbf{#1}};
+				% Insert the image
+				\node[anchor=center] (img) at (0.5*\labelWidth, 0.5*\labelHeight-0.5*\labelSepHeight ) {\includegraphics[height=\imageHeight mm]{#2}};
+				% The two diagnonal points are inserted to create a tikz image as large as the label. In this way, it is correctly placed within the image.
+				\node at (\labelWidth, \labelHeight) {};
+				\node at (0, 0) {};
+				\end{tikzpicture}}%
+		}
+	}
+\end{latex}
+%
+\subsection*{Document}
+\begin{latex}
+	% Just use one \myLabel{title}{imageFile} for each label
+	\myLabel{Springs}{images/springs.jpg}
+	\myLabel{Magnets}{images/magnets}
+	\myLabel{Nails}{images/nails}
+	\myLabel{Regulators}{images/regulators}
+	\myLabel{Sandpaper}{images/sandpaper}
+	\myLabel{Screws}{images/screws2}
+\end{latex}
+%
+
+\clearpage
+\subsection*{Result}
+
+\myLabel{Springs}{images/springs.jpg}
+\myLabel{Magnets}{images/magnets}
+\myLabel{Nails}{images/nails}
+\myLabel{Regulators}{images/regulators}
+\myLabel{Sandpaper}{images/sandpaper}
+\myLabel{Screws}{images/screws2}
+
+\end{document}

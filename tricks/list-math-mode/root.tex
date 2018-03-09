@@ -1,0 +1,93 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+
+\usepackage{enumitem}
+\usepackage{xpatch}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
+% Define a new enumeration list type
+\newlist{mathlist}{enumerate}{1}
+% Set the numerals
+\setlist[mathlist,1]{label={\arabic*.}}
+% Add math environment opening and closing for each item
+\AtBeginEnvironment{mathlist}{%
+	\xpretocmd{\item}{\ifmmode\)\fi}{}{}
+	\xapptocmd{\item}{\ifmmode\else\(\fi}{}{}
+}
+\AtEndEnvironment{mathlist}{%
+	\ifmmode \)\fi% Close math mode
+}
+
+
+\begin{document}
+	
+	\section*{Set math mode as default for each item in list}% Math environment in list
+	
+	\subsection*{Description}
+	Often times, a list containing only math-type content is needed. Typically, for each new list item the \$\$ math environment definition is required.
+	
+	Instead, this example shows a workaround in order to pre-load the math environment automatically for each new list item.
+		
+	\subsection*{Used Packages}
+	\verb|enumitem, xpatch|
+	
+	%% Paste your preamble here to show its code
+	\subsection*{Preamble}
+	
+	\begin{latex}
+	\usepackage{enumitem} % Allows customization of the list environments
+	\usepackage{xpatch} % Container package extending new command declaration or patching existing commands
+	% Define a new enumeration list type
+	\newlist{mathlist}{enumerate}{1}
+	% Set the numerals
+	\setlist[mathlist,1]{label={\arabic*.}}
+	% Add math environment opening and closing for each item
+	\AtBeginEnvironment{mathlist}{%
+	\xpretocmd{\item}{\ifmmode\)\fi}{}{}
+	\xapptocmd{\item}{\ifmmode\else\(\fi}{}{}
+	}
+	\AtEndEnvironment{mathlist}{%
+	\ifmmode \)\fi% Close math mode
+	}
+	\end{latex}
+	
+	%% Paste your document here to show its code
+	\subsection*{Document}
+	\begin{latex}
+		\begin{mathlist}
+			\item x + y = z
+			\item e^{i\pi} + 1 = 0
+			\item E=mc^2
+			\item \)Non math - mode % Jumping out of math-mode 
+		\end{mathlist}
+		\begin{enumerate}
+			\item Foo % It's regular and not in math mode!
+		\end{enumerate}
+	\end{latex}
+	
+	%% Write your document here to parse its code
+	\subsection*{Result}
+	\begin{mathlist}
+		\item x + y = z
+		\item e^{i\pi} + 1 = 0
+		\item E=mc^2
+		\item \)Non math - mode % Jumping out of math-mode 
+	\end{mathlist}
+	\begin{enumerate}
+		\item Foo % It's regular and not in math mode!
+	\end{enumerate}
+
+\end{document}

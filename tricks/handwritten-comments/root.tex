@@ -1,0 +1,195 @@
+
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{lipsum}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{everypage}
+\usepackage{xcolor}
+\usepackage{emerald}
+\usepackage{rotating}
+\usepackage[T1]{fontenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
+\def\PageTopMargin{1in}
+\def\PageLeftMargin{1in}
+\newcommand\atxy[3]{%
+	\AddThispageHook{\smash{\hspace*{\dimexpr-\PageLeftMargin-\hoffset+#1\relax}%
+			\raisebox{\dimexpr\PageTopMargin+\voffset-#2\relax}{#3}}}}
+\newcommand\handnote[6][0]{\atxy{#2}{#3}{\rotatebox{#1}{\parbox[t]{#4}{%
+				\raggedright\fontfamily{fts}\selectfont\color{#5}#6}}}}
+\newcommand\handxform[7]{% SCALING IS EMPLOYED TO EXPAND THE USEFUL RANGE OF #7
+	\raisebox{#1}{%
+		\scalebox{4}[#6]{% THE 4X SCALING IS LATER COUNTERED BY 0.25
+			\raisebox{#2}{%
+				\rotatebox{#3}{%
+					\stretchto{%
+						\rotatebox{#4}{%
+							\char#5}%
+					}{0.25\dimexpr#7\relax}% THE 0.25 IS COUNTERED BY THE EARLIER 4X SCALING
+				}%
+			}%
+		}%
+	}%
+}
+\newcommand\handline             [2][1]{\handxform{.20ex}{0.30ex}{-90}{ 12}{47}{#1}{#2}}
+\newcommand\handrightarrow       [2][1]{\handxform{.55ex}{0.45ex}{-90}{ 90}{62}{#1}{#2}}
+\newcommand\handleftarrow        [2][1]{\handxform{.55ex}{-0.5ex}{ 90}{ 90}{62}{#1}{#2}}
+\newcommand\handhookrightarrow   [2][1]{\handxform{.70ex}{0.60ex}{-90}{-30}{35}{#1}{#2}}
+\newcommand\handhookleftarrow    [2][1]{\handxform{.50ex}{0.60ex}{-90}{ 30}{36}{#1}{#2}}
+\newcommand\handstealthrightarrow[2][1]{\handxform{.50ex}{-0.2ex}{ 90}{ 80}{60}{#1}{#2}}
+\newcommand\handstealthleftarrow [2][1]{\handxform{.50ex}{0.40ex}{-90}{ 80}{60}{#1}{#2}}
+
+\newcommand\handyform[7]{\raisebox{#1}{\scalebox{#6}[1]{%
+			\rotatebox{#3}{\stretchto{\rotatebox{#4}{\raisebox{#2}{\char#5}}}{#7}}}}}
+\newcommand\handuparrow          [2][1]{\handyform{.10ex}{-.08ex}{  0}{ -0}{91}{#1}{#2}}
+\newcommand\handdownarrow        [2][1]{\handyform{.05ex}{-.00ex}{  0}{ -0}{93}{#1}{#2}}
+
+
+\begin{document}
+
+\section*{Hand-written annotations }
+
+\subsection*{Description}
+Steven B. Segletes has shown a beautiful way to represent hand-written annotations over a text, with arrows and variable orientation.
+
+However, a severe limitation is that these notes float at specified coordinates over a page and will not follow the text during pagination.
+
+\textbf{Note}: My system didn't have the \textit{emerald} font installed. I used the instructions found in\\
+\url{https://tex.stackexchange.com/questions/79713/install-emerald-font-package-on-ubuntu}\\
+to install it.
+This official link\\
+\url{https://www.tug.org/fonts/fontinstall-personal.html}\\
+may provide some additional context.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/317190/handwritten-comments-and-annotations-in-margin?newsletter=1&nlcode=544695%7c921f}
+
+\subsection*{Used Packages}
+\verb|lipsum, stackengine, scalerel, everypage, xcolor, emerald, rotating, fontenc|
+
+\subsection*{Preamble}
+\begin{latex}
+	\usepackage{lipsum} % Used to create dummy text
+	\usepackage{stackengine} % Highly customised stacking of objects, insets, baseline changes, etc
+	\usepackage{scalerel} % Constrained scaling and stretching of objects
+	\usepackage{everypage} % Provide hooks to be run on every page of a document
+	\usepackage{xcolor} % Driver-independent color extensions for LaTeX and pdfLaTeX
+	\usepackage{emerald} % The used annotation font
+	\usepackage{rotating} % Rotation tools, including rotated full-page floats
+	\usepackage[T1]{fontenc} % Standard package for selecting font encodings
+	
+	
+	\def\PageTopMargin{1in}
+	\def\PageLeftMargin{1in}
+	\newcommand\atxy[3]{%
+		\AddThispageHook{\smash{\hspace*{\dimexpr-\PageLeftMargin-\hoffset+#1\relax}%
+				\raisebox{\dimexpr\PageTopMargin+\voffset-#2\relax}{#3}}}}
+	\newcommand\handnote[6][0]{\atxy{#2}{#3}{\rotatebox{#1}{\parbox[t]{#4}{%
+					\raggedright\fontfamily{fts}\selectfont\color{#5}#6}}}}
+	\newcommand\handxform[7]{% SCALING IS EMPLOYED TO EXPAND THE USEFUL RANGE OF #7
+		\raisebox{#1}{%
+			\scalebox{4}[#6]{% THE 4X SCALING IS LATER COUNTERED BY 0.25
+				\raisebox{#2}{%
+					\rotatebox{#3}{%
+						\stretchto{%
+							\rotatebox{#4}{%
+								\char#5}%
+						}{0.25\dimexpr#7\relax}% THE 0.25 IS COUNTERED BY THE EARLIER 4X SCALING
+					}%
+				}%
+			}%
+		}%
+	}
+	\newcommand\handline             [2][1]{\handxform{.20ex}{0.30ex}{-90}{ 12}{47}{#1}{#2}}
+	\newcommand\handrightarrow       [2][1]{\handxform{.55ex}{0.45ex}{-90}{ 90}{62}{#1}{#2}}
+	\newcommand\handleftarrow        [2][1]{\handxform{.55ex}{-0.5ex}{ 90}{ 90}{62}{#1}{#2}}
+	\newcommand\handhookrightarrow   [2][1]{\handxform{.70ex}{0.60ex}{-90}{-30}{35}{#1}{#2}}
+	\newcommand\handhookleftarrow    [2][1]{\handxform{.50ex}{0.60ex}{-90}{ 30}{36}{#1}{#2}}
+	\newcommand\handstealthrightarrow[2][1]{\handxform{.50ex}{-0.2ex}{ 90}{ 80}{60}{#1}{#2}}
+	\newcommand\handstealthleftarrow [2][1]{\handxform{.50ex}{0.40ex}{-90}{ 80}{60}{#1}{#2}}
+	
+	\newcommand\handyform[7]{\raisebox{#1}{\scalebox{#6}[1]{%
+				\rotatebox{#3}{\stretchto{\rotatebox{#4}{\raisebox{#2}{\char#5}}}{#7}}}}}
+	\newcommand\handuparrow          [2][1]{\handyform{.10ex}{-.08ex}{  0}{ -0}{91}{#1}{#2}}
+	\newcommand\handdownarrow     
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+	\begin{minipage}[c]{0.7\linewidth}
+		\lipsum[1-2]
+	\end{minipage}
+	
+	\handnote[1]{15cm}{3cm}{0.25\linewidth}{red}{\lipsum[4]}
+	
+	\handnote[4]{1cm}{5cm}{3cm}{blue}{I have a really short comment}
+	\handnote[4]{3.5cm}{5cm}{2cm}{blue}{\handrightarrow[1.7]{4ex}}
+	
+	\handnote[0]{5cm}{6.8cm}{9cm}{blue}{%
+		\handline[2]{7ex} \handline[2.5]{6ex} \handline[2]{5ex}}%
+	
+	\handnote[-75]{2cm}{10cm}{3cm}{red}{\handhookleftarrow[2.1]{6ex}}
+	\handnote[20]{3cm}{11cm}{2cm}{red}{This is a relatively short comment
+		to display text rotation}
+	
+	\handnote[89]{1cm}{10cm}{10cm}{red}{This is a vertical note}
+	
+	%
+	\handnote[0]{6.5cm}{12cm}{10cm}{red}{{\Large ACCENTS:}\\%
+		handlines: \handline{6ex}\handline[3]{12ex}\\
+		handrightarrows: \handrightarrow{4ex}\handrightarrow[2]{5ex}\\
+		handleftarrows: \handleftarrow{4ex}\handleftarrow[2]{5ex}\\
+		handhookrightarrows: \handhookrightarrow[1]{4ex}\handhookrightarrow[2.1]{7ex}\\
+		handhookleftarrows:\handhookleftarrow[1]{5ex}\handhookleftarrow[2.1]{9ex}\\
+		handstealthleftarrows: \handstealthleftarrow{5ex}\handstealthleftarrow[2]{5ex}\\
+		handstealthrightarrows: \handstealthrightarrow{5ex}\handstealthrightarrow[2]{5ex}\\
+		handuparrows \handuparrow{2ex}\handuparrow[1.2]{4ex}\\
+		handdownarrows \handdownarrow{2ex}\handdownarrow[1.2]{4ex}}
+\end{latex}
+
+\clearpage
+\subsection*{Result}
+\begin{minipage}[c]{0.7\linewidth}
+	\lipsum[1-2]
+\end{minipage}
+
+	\handnote[1]{15cm}{3cm}{0.25\linewidth}{red}{\lipsum[4]}
+	
+	\handnote[4]{1cm}{5cm}{3cm}{blue}{I have a really short comment}
+	\handnote[4]{3.5cm}{5cm}{2cm}{blue}{\handrightarrow[1.7]{4ex}}
+	
+	\handnote[0]{5cm}{6.8cm}{9cm}{blue}{%
+		\handline[2]{7ex} \handline[2.5]{6ex} \handline[2]{5ex}}%
+	
+	\handnote[-75]{2cm}{10cm}{3cm}{red}{\handhookleftarrow[2.1]{6ex}}
+	\handnote[20]{3cm}{11cm}{2cm}{red}{This is a relatively short comment
+		to display text rotation}
+	
+	\handnote[89]{1cm}{10cm}{10cm}{red}{This is a vertical note}
+	
+	%
+	\handnote[0]{6.5cm}{12cm}{10cm}{red}{{\Large ACCENTS:}\\%
+		handlines: \handline{6ex}\handline[3]{12ex}\\
+		handrightarrows: \handrightarrow{4ex}\handrightarrow[2]{5ex}\\
+		handleftarrows: \handleftarrow{4ex}\handleftarrow[2]{5ex}\\
+		handhookrightarrows: \handhookrightarrow[1]{4ex}\handhookrightarrow[2.1]{7ex}\\
+		handhookleftarrows:\handhookleftarrow[1]{5ex}\handhookleftarrow[2.1]{9ex}\\
+		handstealthleftarrows: \handstealthleftarrow{5ex}\handstealthleftarrow[2]{5ex}\\
+		handstealthrightarrows: \handstealthrightarrow{5ex}\handstealthrightarrow[2]{5ex}\\
+		handuparrows \handuparrow{2ex}\handuparrow[1.2]{4ex}\\
+		handdownarrows \handdownarrow{2ex}\handdownarrow[1.2]{4ex}}
+
+\end{document}
