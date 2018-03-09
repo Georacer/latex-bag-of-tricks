@@ -1,0 +1,118 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{pgfplots}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+\makeatletter
+\def\pgfmathstoreseed#1{\let#1\pgfmath@rnd@z}
+\let\pgfmathrestoreseed\pgfmathsetseed
+\makeatother
+
+
+\begin{document}
+
+\section*{Adding Noise to Plots}
+
+\subsection*{Description}
+Sometimes realistic noise needs to be added to function plots. The following code demonstrates that.
+
+The \verb|\pgfmathstoreseed{arg1}| and \verb|\pgfmathrestoreseed| can be used to manipulate the random number generator seed.
+
+The \verb|rand| function returns uniform noise. It would be nice to find some native command for Gaussian, white, etc noises.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/144272/noisy-analogue-waveform-in-tikz}\\
+\url{https://tex.stackexchange.com/questions/126838/plotting-a-random-function-fx-and-fxsinx-with-tikz}
+
+\subsection*{Used Packages}
+\verb|pgfplots|
+
+\subsection*{Preamble}
+\begin{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{pgfplots}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+\makeatletter
+\def\pgfmathstoreseed#1{\let#1\pgfmath@rnd@z}
+\let\pgfmathrestoreseed\pgfmathsetseed
+\makeatother
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+\begin{tikzpicture}[samples=200, domain=0:5*360]
+\begin{axis}[
+width=10cm, height=4cm,
+enlarge x limits=false,
+xtick=\empty,
+axis lines*=middle,
+]
+\pgfmathsetseed{126838}
+\addplot [no markers, smooth] {rand};
+\end{axis}
+\end{tikzpicture}
+
+\noindent
+\begin{tikzpicture}[samples=250, domain=0:10]
+\begin{axis}[
+width=10cm, height=4cm,
+enlarge x limits=false,
+xtick=\empty,
+axis lines*=middle,
+]
+\pgfmathsetseed{126838}
+\addplot[color=blue] {rand/10};
+\node[right] at (axis cs:7.5,0.3) {\color{blue}$f(x)$};
+\pgfmathsetseed{126838}
+\addplot[color=red] {rand/10 + sin (deg(x))};
+\node[left] at (axis cs:10,-0.7) {\color{red}$f(x) + \sin x$};
+\end{axis}
+\end{tikzpicture}
+\end{latex}
+
+\subsection*{Result}
+
+\begin{tikzpicture}[samples=200, domain=0:5*360]
+	\begin{axis}[
+	width=10cm, height=4cm,
+	enlarge x limits=false,
+	xtick=\empty,
+	axis lines*=middle,
+	]
+	\pgfmathsetseed{126838}
+	\addplot [no markers, smooth] {rand};
+	\end{axis}
+\end{tikzpicture}
+ 
+\noindent
+\begin{tikzpicture}[samples=250, domain=0:10]
+\begin{axis}[
+width=10cm, height=4cm,
+enlarge x limits=false,
+xtick=\empty,
+axis lines*=middle,
+]
+\pgfmathsetseed{126838}
+\addplot[color=blue] {rand/10};
+\node[right] at (axis cs:7.5,0.3) {\color{blue}$f(x)$};
+\pgfmathsetseed{126838}
+\addplot[color=red] {rand/10 + sin (deg(x))};
+\node[left] at (axis cs:10,-0.7) {\color{red}$f(x) + \sin x$};
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

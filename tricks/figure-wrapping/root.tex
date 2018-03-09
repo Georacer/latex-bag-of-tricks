@@ -1,0 +1,101 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{lipsum}  % generates filler text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
+\begin{document}
+
+\section*{Figure Wrapping}
+
+\subsection*{Description}
+Wrapping a figure around text isn't a stock functionality in \LaTeX, but the \verb|wrapfig| package provides a clean interface for that purpose.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/118602/how-to-text-wrap-an-image-in-latex}\\
+Frog image from: \url{http://animal-wildlife.blogspot.gr/2011/08/tree-frog.html}
+
+\subsection*{Used Packages}
+\verb|wrapfig, graphicx|
+
+\subsection*{Preamble}
+\begin{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{lipsum}  % generates filler text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+{\centering
+	{\Large Figure Wrapping Example}\\
+	\vspace{5pt}
+	{\large writeLaTeX}\\
+	\vspace{5pt}
+	\today\\
+	\vspace{5pt}
+}
+
+\begin{wrapfigure}{R}{0.3\textwidth}
+	\centering
+	\includegraphics[width=0.25\textwidth]{frog.jpg}
+	\caption{\label{fig:frog1}This is a figure caption.}
+\end{wrapfigure}
+
+\lipsum[1]
+
+\begin{wrapfigure}{L}{0.3\textwidth}
+	\centering
+	\includegraphics[width=0.25\textwidth]{frog.jpg}
+	\caption{\label{fig:frog2}This is a figure caption.}
+\end{wrapfigure}
+
+\lipsum[2-3]
+\end{latex}
+
+\clearpage
+\subsection*{Result}
+{\centering
+{\Large Figure Wrapping Example}\\
+\vspace{5pt}
+{\large writeLaTeX}\\
+\vspace{5pt}
+\today\\
+\vspace{5pt}
+}
+
+\begin{wrapfigure}{R}{0.3\textwidth}
+	\centering
+	\includegraphics[width=0.25\textwidth]{frog.jpg}
+	\caption{\label{fig:frog1}This is a figure caption.}
+\end{wrapfigure}
+
+\lipsum[1]
+
+\begin{wrapfigure}{L}{0.3\textwidth}
+	\centering
+	\includegraphics[width=0.25\textwidth]{frog.jpg}
+	\caption{\label{fig:frog2}This is a figure caption.}
+\end{wrapfigure}
+
+\lipsum[2-3]
+
+\end{document}

@@ -1,0 +1,68 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
+
+\begin{document}
+
+\section*{Summation with Limits on the Side}
+
+\subsection*{Description}
+Some times placing the summation limits to the side of the summation symbol can provide better typesetting or simply save vertical space. This is how to achieve this.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/283939/having-sub-super-scripts-on-the-side-for-sum}
+
+\subsection*{Used Packages}
+\verb|amsmath|
+
+\subsection*{Preamble}
+\begin{latex}
+	\usepackage{amsmath}
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+	Standard summation:
+	\begin{equation}
+	\sum_{1}^{\infty} 1/x
+	\end{equation}
+	Using \verb|\nolimits|:
+	\begin{equation}
+	\sum\nolimits_{1}^{\infty}1/x
+	\end{equation}
+	Using \verb|\textstyle|:
+	\begin{equation}
+	{\textstyle\sum}_{1}^{\infty}1/x
+	\end{equation}
+\end{latex}
+
+\subsection*{Result}
+
+Standard summation:
+\begin{equation}
+\sum_{1}^{\infty} 1/x
+\end{equation}
+Using \verb|\nolimits|:
+\begin{equation}
+\sum\nolimits_{1}^{\infty}1/x
+\end{equation}
+Using \verb|\textstyle|:
+\begin{equation}
+{\textstyle\sum}_{1}^{\infty}1/x
+\end{equation}
+
+\end{document}

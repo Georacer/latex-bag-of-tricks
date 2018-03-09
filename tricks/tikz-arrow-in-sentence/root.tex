@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{tikz}
+\usetikzlibrary{topaths}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+\tikzstyle{every picture}+=[remember picture% Be able to refer to nodes in other pictures
+	,inner xsep=0% prevent messing up the word spacing in the horizontal direction
+	,inner ysep=0.25ex] % Adjust vertical spacing
+
+\begin{document}
+
+\section*{Arrows within Text}
+
+\subsection*{Description}
+Tikz can store node positions within the text, which can be later used to rout arrows.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/408177/drawing-an-arrow-between-two-parts-of-a-sentence?newsletter=1&nlcode=544695%7c921f}
+
+\subsection*{Used Packages}
+\verb|tikz|
+
+\subsection*{Preamble}
+\begin{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{tikz}
+\usetikzlibrary{topaths}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+\tikzstyle{every picture}+=[remember picture% Be able to refer to nodes in other pictures
+,inner xsep=0% prevent messing up the word spacing in the horizontal direction
+,inner ysep=0.25ex] % Adjust vertical spacing
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+This is a  very long \tikz[baseline=(node1.base)]\node (node1)  {\underline{sentence that}}; appears
+in this very \tikz[baseline=(node2.base)]\node (node2) {\underline{short short}}; document.
+
+\begin{tikzpicture}[overlay]
+% Bend above text line
+\draw[-latex] (node2.north) to[bend right] (node1.north);
+% Angled
+\draw[-latex] (node2.south) -- ++(0,-1.5ex) -| (node1.south);
+\end{latex}
+
+\subsection*{Result}
+
+This is a  very long \tikz[baseline=(node1.base)]\node (node1)  {\underline{sentence that}}; appears
+in this very \tikz[baseline=(node2.base)]\node (node2) {\underline{short short}}; document.
+
+\begin{tikzpicture}[overlay]
+% Bend above text line
+\draw[-latex] (node2.north) to[bend right] (node1.north);
+% Angled
+\draw[-latex] (node2.south) -- ++(0,-1.5ex) -| (node1.south);
+\end{tikzpicture}
+
+\end{document}

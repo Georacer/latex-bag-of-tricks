@@ -1,0 +1,162 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage[edges]{forest}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% Define custom colors
+\definecolor{folderbg}{RGB}{124,166,198}
+\definecolor{folderborder}{RGB}{110,144,169}
+% Define the folder and file drawing commands
+\newlength\Size
+\setlength\Size{4pt}
+\tikzset{%
+	folder/.pic={%
+		\filldraw [draw=folderborder, top color=folderbg!50, bottom color=folderbg] (-1.05*\Size,0.2\Size+5pt) rectangle ++(.75*\Size,-0.2\Size-5pt);
+		\filldraw [draw=folderborder, top color=folderbg!50, bottom color=folderbg] (-1.15*\Size,-\Size) rectangle (1.15*\Size,\Size);
+	},
+	file/.pic={%
+	\filldraw [draw=folderborder, top color=folderbg!5, bottom color=folderbg!10] (-\Size,.4*\Size+5pt) coordinate (a) |- (\Size,-1.2*\Size) coordinate (b) -- ++(0,1.6*\Size) coordinate (c) -- ++(-5pt,5pt) coordinate (d) -- cycle (d) |- (c) ;
+	}
+}
+% Edit forest options
+\forestset{%
+	declare autowrapped toks={pic me}{}, % This is an option to hold the value desired for each node. Eventually, this will take values such as pic {file}. By default, it is empty
+	pic dir tree/.style={% We define a style for trees of this kind, pic dir tree
+		for tree={%
+			folder, % Select the directory-style, provided by the folder/edges library
+			font=\ttfamily,
+			grow'=0,
+		},
+		before typesetting nodes={% We'll collect the pic me settings while parsing the tree and add them to the edge path by appending the option to the value of edge label
+			for tree={%
+				edge label+/.option={pic me},
+			},
+		},
+	},
+	pic me set/.code n args=2{% pic me set takes 2 arguments. The first is the name of a Forest style to-be-created. The second is the name of a pic such as folder (in the icon sense) or file.
+		\forestset{%
+			#1/.style={%
+				inner xsep=2\Size,
+				pic me={pic {#2}},
+			}
+		}
+	},
+	pic me set={directory}{folder}, % We just create 2 such styles for now.
+	pic me set={file}{file},
+}
+
+\begin{document}
+
+\section*{File System Structure 2}
+
+\subsection*{Description}
+Another way to plot a file system structure is to take advantage of the \texttt{forest} package. Note that for this specific example \texttt{forest} v2 or greater is required.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/328886/making-a-directory-tree-of-folders-and-files?newsletter=1&nlcode=544695%7c921f}\\
+\url{https://www.ctan.org/pkg/forest}
+
+\subsection*{Used Packages}
+\verb|forest, tikz|
+
+\subsection*{Preamble}
+\begin{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage[edges]{forest}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% Define custom colors
+\definecolor{folderbg}{RGB}{124,166,198}
+\definecolor{folderborder}{RGB}{110,144,169}
+% Define the folder and file drawing commands
+\newlength\Size
+\setlength\Size{4pt}
+\tikzset{%
+	folder/.pic={%
+		\filldraw [draw=folderborder, top color=folderbg!50, bottom color=folderbg] (-1.05*\Size,0.2\Size+5pt) rectangle ++(.75*\Size,-0.2\Size-5pt);
+		\filldraw [draw=folderborder, top color=folderbg!50, bottom color=folderbg] (-1.15*\Size,-\Size) rectangle (1.15*\Size,\Size);
+	},
+	file/.pic={%
+		\filldraw [draw=folderborder, top color=folderbg!5, bottom color=folderbg!10] (-\Size,.4*\Size+5pt) coordinate (a) |- (\Size,-1.2*\Size) coordinate (b) -- ++(0,1.6*\Size) coordinate (c) -- ++(-5pt,5pt) coordinate (d) -- cycle (d) |- (c) ;
+	}
+}
+% Edit forest options
+\forestset{%
+	declare autowrapped toks={pic me}{}, % This is an option to hold the value desired for each node. Eventually, this will take values such as pic {file}. By default, it is empty
+	pic dir tree/.style={% We define a style for trees of this kind, pic dir tree
+		for tree={%
+			folder, % Select the directory-style, provided by the folder/edges library
+			font=\ttfamily,
+			grow'=0,
+		},
+		before typesetting nodes={% We'll collect the pic me settings while parsing the tree and add them to the edge path by appending the option to the value of edge label
+			for tree={%
+				edge label+/.option={pic me},
+			},
+		},
+	},
+	pic me set/.code n args=2{% pic me set takes 2 arguments. The first is the name of a Forest style to-be-created. The second is the name of a pic such as folder or file.
+		\forestset{%
+			#1/.style={%
+				inner xsep=2\Size,
+				pic me={pic {#2}},
+			}
+		}
+	},
+	pic me set={directory}{folder}, % We just create 2 such styles for now.
+	pic me set={file}{file},
+}
+
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+\begin{forest}
+	pic dir tree, % Import the tree preamble
+	where level=0{}{% folder icons by default; override using file for file icons
+		directory, % All level 0 nodes will use the directory format
+	},
+	[system % Now draw the tree
+	[config]
+	[lib
+	[Access]
+	[Plugin]
+	[file.txt, file] % Override the default folder format and use the file format, as defined above
+	]
+	[templates]
+	[tests]
+	]
+\end{forest}
+\end{latex}
+
+\subsection*{Result}
+\begin{forest}
+	pic dir tree, % Import the tree preamble
+	where level=0{}{% folder icons by default; override using file for file icons
+		directory, % All level 0 nodes will use the directory format
+	},
+	[system % Now draw the tree
+		[config]
+		[lib
+			[Access]
+			[Plugin]
+			[file.txt, file] % Override the default folder format and use the file format, as defined above
+		]
+		[templates]
+		[tests]
+	]
+\end{forest}
+\end{document}
