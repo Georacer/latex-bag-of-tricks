@@ -1,0 +1,87 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{etoolbox} % tool­box of pro­gram­ming fa­cil­i­ties geared pri­mar­ily to­wards LaTeX class and pack­age au­thors
+\usepackage{xpatch} % The xpatch package generalizes the macro patching commands provided by etoolbox
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% must be done after loading hyperref
+\newcommand{\myunknownrefsymbol}{\color{red}CITE}
+\makeatletter
+\patchcmd{\@setref}{??}{\color{red}\textless REF \textgreater}{}{}
+\def\@citex[#1]#2{\leavevmode
+	\let\@citea\@empty
+	\@cite{\@for\@citeb:=#2\do
+		{\@citea\def\@citea{,\penalty\@m\ }%
+			\edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+			\if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+			\@ifundefined{b@\@citeb}{\hbox{\reset@font\bfseries \myunknownrefsymbol}%
+				\G@refundefinedtrue
+				\@latex@warning
+				{Citation `\@citeb' on page \thepage \space undefined}}%
+			{\@cite@ofmt{\csname b@\@citeb\endcsname}}}}{#1}}
+\makeatother
+
+\begin{document}
+
+\section*{Replace the Missing Reference Symbol (??)}
+
+\subsection*{Description}
+Typically, when a reference to a missing label occurs, a double question mark appears (??). This is hard to track or search for.
+Instead, this symbol can be changed to an arbitrary string, for better visibility.
+The same holds for the missing citation symbol.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/345438/how-to-replace-not-found-reference-in-an-another-constant-e-g-ref?newsletter=1&nlcode=544695%7c921f}\\
+\url{https://tex.stackexchange.com/questions/255533/how-to-replace-default-missing-reference-symbol}
+
+\subsection*{Used Packages}
+\verb|etoolbox, xpatch|
+
+\subsection*{Preamble}
+\begin{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage{etoolbox} % pro­gram­ming fa­cil­i­ties geared pri­mar­ily to­wards LaTeX class and pack­age au­thors
+\usepackage{xpatch} % generalizes the macro patching commands provided by etoolbox
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% must be done after loading hyperref
+\newcommand{\myunknownrefsymbol}{\color{red}CITE}
+\makeatletter
+\patchcmd{\@setref}{??}{\color{red}\textless REF \textgreater}{}{}
+\def\@citex[#1]#2{\leavevmode
+	\let\@citea\@empty
+	\@cite{\@for\@citeb:=#2\do
+		{\@citea\def\@citea{,\penalty\@m\ }%
+			\edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+			\if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+			\@ifundefined{b@\@citeb}{\hbox{\reset@font\bfseries \myunknownrefsymbol}%
+				\G@refundefinedtrue
+				\@latex@warning
+				{Citation `\@citeb' on page \thepage \space undefined}}%
+			{\@cite@ofmt{\csname b@\@citeb\endcsname}}}}{#1}}
+\makeatother
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+	Figure \ref{missing} is missing.\\	
+	The same holds for reference \cite{missing-book}.
+\end{latex}
+
+\subsection*{Result}
+Figure \ref{missing} is missing.\\
+The same holds for reference \cite{missing-book}.
+
+\end{document}

@@ -1,0 +1,306 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default definitions 
+\input{../default-setup-2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage[gobble=auto]{pythontex}
+\usepackage{pgfplots} % Used for plotting within LaTeX
+\usepackage{graphicx} % Used to import Python-generated pdfs
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% Pass LaTeX variables into the Python evnironment
+\setpythontexcontext{textwidth=\the\textwidth,%
+	textheight=\the\textheight%
+}
+
+\begin{document}
+
+\section*{Calculations in \LaTeX\ 2: Python Integration}
+
+\subsection*{Description}
+
+The interfaces of the \verb|calc| and \verb|fp| packages may seem cumbersome to some. Furthermore, their capabilities are definitely limited.
+
+\verb|pythontex| offers Python integration for a \LaTeX document. A Python shell is invoked and is passed any code contained within the \verb|pythontex| environments.
+The results can be then accessed from the \LaTeX code.
+
+To use \verb|pythontex|, in this case in a Linux environment:
+\begin{enumerate}
+	\item Write your \LaTeX document, containing any valid \verb|pythontex| code
+	\item Compile the \LaTeX document (e.g. \texttt{pdflatex root.tex}) to generate \verb|pythontex|-specific code files
+	\item Run the \verb|pythontex| program on the \LaTeX document (i.e. \texttt{pythontex root.tex}).\\
+	This should read the generated code files and executre all Python commands
+	\item Compile the \LaTeX document anew to include the \verb|pythontex| output
+\end{enumerate}
+
+Read through the verbatim example code and the result for more information on the usage of the package.
+
+\textbf{Note 1:} Currently \verb|pythontex| does not support a lower build directory (e.g. ./build/output.pdf). All files must be at the same level as the root document.
+
+\textbf{Note 2:} I have not managed to setup an automated build chain of commands within TeXstudio. Calling \verb|pythontex| from within it sometimes produces runtime errors, especially when making \verb|matplotlib| figures, whereas calling \verb|pythontex| manually from the console runs fine. I have not found the cause.
+I tried calling using an external bash script to run \verb|pythontex| from within TeXstudio but this didn't help either.
+
+\textbf{Note 3}: \verb|pythontex| is not compatible with the listings package. If you need to typeset code listings you can use the \verb|minted| package instead. \verb|minted| calls the \verb|pygments| software, which requires the \texttt{-shell-escape} \LaTeX compilation option. This imposes some security risks, so do not use on documents you do not trust.
+
+\textbf{Note 4}: This document uses the \verb|gnuplot| extension of pgfplots, which requires the \texttt{-shell-escape} build option.
+
+\subsection*{Sources}
+\url{https://tex.stackexchange.com/questions/397234/how-to-do-mathematical-programming-in-latex?newsletter=1&nlcode=544695%7c921f}\\
+\url{https://www.ctan.org/tex-archive/macros/latex/contrib/pythontex}
+\url{http://tug.ctan.org/tex-archive/macros/latex/contrib/minted/minted.pdf}
+
+\subsection*{Used Packages}
+\verb|graphicx|
+
+\subsection*{Preamble}
+\begin{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+\usepackage[gobble=auto]{pythontex}
+\usepackage{pgfplots} % Used for plotting within LaTeX
+\usepackage{graphicx} % Used to import Python-generated pdfs
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+% Pass LaTeX variables into the Python evnironment
+\setpythontexcontext{textwidth=\the\textwidth,%
+	textheight=\the\textheight%
+}
+\end{latex}
+
+\subsection*{Document}
+\begin{latex}
+Python\TeX provides a multitude of environments which allow \LaTeX to interact with Python.
+
+The \mintinline{latex}{\pyb}/\mintinline{latex}{pyblock} environment typesets the passed code into the \LaTeX document and also executes it. However, it will not print out any results.
+
+\pyb{my_str='hi'}
+
+\begin{pyblock}
+	my_str+=' there'
+	print('Python says: {0}!'.format(my_str))
+\end{pyblock}
+
+You can access the last printout done by Python using the \mintinline{latex}{\printpythontex} command.
+
+\printpythontex
+
+The \mintinline{latex}{\pyc}/\mintinline{latex}{pycode} environment both executes code and typesets results, but does not typeset the code itself.
+
+\pyc{my_str="calculations"}
+
+\begin{pycode}
+	my_str="calculations"
+	print("Let's do some {0}".format(my_str))
+\end{pycode}
+
+You can use the \mintinline{latex}{\pys}/\mintinline{latex}{pysub} environment to substitute Python variable values into \LaTeX code, using the \verb|!{...}| format.
+
+In this example, \verb|sympy| expression manipulation is used to generate a function expression, which is then plotted using \verb|gnuplot|.
+
+\begin{pycode}
+	from sympy import *
+	x = symbols('x')
+	f = integrate(cos(x)*sin(x), x)
+\end{pycode}
+
+\begin{pysub}
+	\begin{tikzpicture}
+	\begin{axis}[xlabel=$x$,ylabel=$y$,samples=200,no markers,title=$!{latex(f)}$]
+	\addplot[black] gnuplot {!{f}};
+	\end{axis} 
+	\end{tikzpicture}
+\end{pysub}
+
+The \texttt{r} string prefix prevents escaping characters. This can be used to effectively perform \LaTeX code generation within  a \mintinline{latex}{pycode} block.
+
+\begin{pycode}
+	print(r'\begin{center}')
+		print(r'\textit{A message from Python!}')
+		print(r'\end{center}')
+\end{pycode}
+
+Now, let us focus on actual calculations done with \verb|pythontex|.
+
+\textbf{Example 1: Typical arithmetic}
+\begin{pyblock}
+	x1 = 5.1
+	x2 = 7.4
+	y = 3*x1**2 + 5*x2**0.5
+\end{pyblock}
+The answer is \py{y}.
+
+~\\
+\textbf{Example 2: Math environment code generation}
+
+\pys{$1 + 1 = !{1+1}$}
+
+~\\
+\textbf{Example 3: String manipulation}
+
+\begin{pyblock}
+	username = "Doctor"
+	password = "Zee"
+\end{pyblock}
+\begin{pysub}
+	Your username is: \textit{!{username}}\\
+	Your password is: \textit{!{password}}
+\end{pysub}
+
+~\\
+\textbf{Example 4: Using} \verb|matplotlib| \textbf{to generate figures}
+
+The \mintinline{latex}{pylabcode} block automatically imports the \mintinline{python}{matplotlib} module.
+First of all, notice the usage of the \texttt{textwidth} variable, which was passed to the Python environment at the preamble, to control the size of the figure.
+Following that, the matplotlib commands are juxtaposed.
+Finally, a .pdf figure is saved with the \mintinline{python}{savefig} command.
+
+\textbf{Note:} Your initial \LaTeX must have any \mintinline{latex}{\includegraphics} commands commented out, because these files have not yet been created by \verb|pythontex|. Once the image files are created, you can un-comment any image include commands.
+
+\begin{pylabcode}
+	figwidth = 0.4*pytex.pt_to_in(pytex.context.textwidth)
+	figheight = 3/4*figwidth
+	rc('text', usetex=True)
+	rc('font',**{'family':'serif', 'serif':['Times']})
+	rc('font', size=10.0)
+	rc('legend', fontsize=10.0)
+	x = linspace(0, 3*pi)
+	figure(figsize=(figwidth, figheight))
+	plot(x, sin(x), label='$\sin(x)$')
+	plot(x, sin(x)**2, label='$\sin^2(x)$',	linestyle='dashed')
+	xlabel(r'$x$-axis')
+	ylabel(r'$y$-axis')
+	xticks(arange(0, 4*pi, pi), ('$0$','$\pi$', '$2\pi$', '$3\pi$'))
+	axis([0, 3*pi, -1, 1])
+	legend(loc='lower right')
+	savefig('myplot.pdf', bbox_inches='tight')
+\end{pylabcode}
+
+
+\begin{center}
+	\includegraphics{myplot.pdf}
+\end{center}
+\end{latex}
+
+\subsection*{Result}
+
+Python\TeX provides a multitude of environments which allow \LaTeX to interact with Python.
+
+The \mintinline{latex}{\pyb}/\mintinline{latex}{pyblock} environment typesets the passed code into the \LaTeX document and also executes it. However, it will not print out any results.
+
+\pyb{my_str='hi'}
+
+\begin{pyblock}
+	my_str+=' there'
+	print('Python says: {0}!'.format(my_str))
+\end{pyblock}
+
+You can access the last printout done by Python using the \mintinline{latex}{\printpythontex} command.
+
+\printpythontex
+
+The \mintinline{latex}{\pyc}/\mintinline{latex}{pycode} environment both executes code and typesets results, but does not typeset the code itself.
+
+\pyc{my_str="calculations"}
+
+\begin{pycode}
+	my_str="calculations"
+	print("Let's do some {0}".format(my_str))
+\end{pycode}
+
+You can use the \mintinline{latex}{\pys}/\mintinline{latex}{pysub} environment to substitute Python variable values into \LaTeX code, using the \verb|!{...}| format.
+
+In this example, \verb|sympy| expression manipulation is used to generate a function expression, which is then plotted using \verb|gnuplot|.
+
+\begin{pycode}
+	from sympy import *
+	x = symbols('x')
+	f = integrate(cos(x)*sin(x), x)
+\end{pycode}
+
+\begin{pysub}
+	\begin{tikzpicture}
+	\begin{axis}[xlabel=$x$,ylabel=$y$,samples=200,no markers,title=$!{latex(f)}$]
+	\addplot[black] gnuplot {!{f}};
+	\end{axis} 
+	\end{tikzpicture}
+\end{pysub}
+
+The \texttt{r} string prefix prevents escaping characters. This can be used to effectively perform \LaTeX code generation within  a \mintinline{latex}{pycode} block.
+
+\begin{pycode}
+	print(r'\begin{center}')
+	print(r'\textit{A message from Python!}')
+	print(r'\end{center}')
+\end{pycode}
+
+Now, let us focus on actual calculations done with \verb|pythontex|.
+
+\textbf{Example 1: Typical arithmetic}
+\begin{pyblock}
+	x1 = 5.1
+	x2 = 7.4
+	y = 3*x1**2 + 5*x2**0.5
+\end{pyblock}
+The answer is \py{y}.
+
+~\\
+\textbf{Example 2: Math environment code generation}
+
+\pys{$1 + 1 = !{1+1}$}
+
+~\\
+\textbf{Example 3: String manipulation}
+
+\begin{pyblock}
+	username = "Doctor"
+	password = "Zee"
+\end{pyblock}
+\begin{pysub}
+	Your username is: \textit{!{username}}\\
+	Your password is: \textit{!{password}}
+\end{pysub}
+
+~\\
+\textbf{Example 4: Using} \verb|matplotlib| \textbf{to generate figures}
+
+The \mintinline{latex}{pylabcode} block automatically imports the \mintinline{python}{matplotlib} module.
+First of all, notice the usage of the \texttt{textwidth} variable, which was passed to the Python environment at the preamble, to control the size of the figure.
+Following that, the matplotlib commands are juxtaposed.
+Finally, a .pdf figure is saved with the \mintinline{python}{savefig} command.
+
+\textbf{Note:} Your initial \LaTeX must have any \mintinline{latex}{\includegraphics} commands commented out, because these files have not yet been created by \verb|pythontex|. Once the image files are created, you can un-comment any image include commands.
+
+\begin{pylabcode}
+	figwidth = 0.4*pytex.pt_to_in(pytex.context.textwidth)
+	figheight = 3/4*figwidth
+	rc('text', usetex=True)
+	rc('font',**{'family':'serif', 'serif':['Times']})
+	rc('font', size=10.0)
+	rc('legend', fontsize=10.0)
+	x = linspace(0, 3*pi)
+	figure(figsize=(figwidth, figheight))
+	plot(x, sin(x), label='$\sin(x)$')
+	plot(x, sin(x)**2, label='$\sin^2(x)$',	linestyle='dashed')
+	xlabel(r'$x$-axis')
+	ylabel(r'$y$-axis')
+	xticks(arange(0, 4*pi, pi), ('$0$','$\pi$', '$2\pi$', '$3\pi$'))
+	axis([0, 3*pi, -1, 1])
+	legend(loc='lower right')
+	savefig('myplot.pdf', bbox_inches='tight')
+\end{pylabcode}
+
+
+\begin{center}
+	\includegraphics{myplot.pdf}
+\end{center}
+
+
+\end{document}

@@ -61,9 +61,17 @@
 	
 	Finally, I managed to get a satisfactory result with the \texttt{pdfpages} package. I put together a template document to be used for each example, compile it and then include the output .pdf to the collection document.
 	
-	The code of the top-level document can be seen below.
+	The code pattern of the top-level document can be seen below.
 	
 	Enjoy!
+	
+	\textbf{NOTE:} Some of the tricks use the \verb|minted| package to typeset \LaTeX code. This requires the addition of the \texttt{-shell-escape} option when building your \LaTeX document.
+	For example, my build command in a Linux environment is:\\
+	\texttt{"/usr/local/texlive/2016/bin/x86\_64-linux/pdflatex" -synctex=1 -shell-escape}
+	
+	\hspace{4ex} \texttt{-interaction=nonstopmode \%.tex}
+	
+	\textbf{WARNING:} Compiling \LaTeX documents with the \texttt{-shell-escape} option enabled is considered a security risk. Only use it to compile documents you trust.
 	
 		
 	\subsection*{Used Packages}

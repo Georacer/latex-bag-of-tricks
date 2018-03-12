@@ -1,0 +1,43 @@
+\usepackage{xcolor} % Required for listings color definitions
+\definecolor{lightlightgray}{gray}{0.9}
+
+%% Specify input format and language
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+%% Include minted for source code highlighting
+%% WARNING: -shell-escape latex build option required
+% Spacing bug and fix: https://tex.stackexchange.com/questions/325939/unwanted-indentation-with-mintinline-possible-bug
+\usepackage{tcolorbox}
+\tcbuselibrary{minted, skins, breakable}
+
+\newtcblisting{latex}{
+	listing engine = minted,
+	colback = lightlightgray, 
+	colframe = black!70,
+	listing only,
+	minted style = default,
+	minted language = latex,
+	left = 1mm,
+	breakable, % Options for breaking listing longer than one page
+	enhanced jigsaw,
+}
+
+\usepackage{minted} % Automatically loads etoolbox
+\setminted[latex]{breaklines=True} % Enable line-breaking
+%\setminted[latex]{key=value} % Add global language options
+
+%% Define URL format
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=blue
+}
+
+\setlength\parindent{0pt} % Disable paragraph indent
