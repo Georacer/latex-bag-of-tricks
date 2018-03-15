@@ -1,0 +1,142 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\pagestyle{empty} % Prevent relative page numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Default preamble 
+\input{../default-setup-2}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific packages
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example-specific preamble
+
+
+\begin{document}
+	
+	%% CHANGE THIS: Section title
+	\section*{Template}
+	
+	%% CHANGE THIS: Section description
+	\subsection*{Description}
+	A uniform template is useful to keep all the tips and examples of this portfolio consistent and searchable. The related code, both for the preamble and the document, as well as the compiled examples are provided in separate sections.
+	
+	For this section, the template code is presented.
+	
+	To create a new trick:
+	\begin{enumerate}
+		\item Create a new folder inside the tricks subfolder
+		\item Copy the code presented in the \textit{Document} subsection into a new \texttt{root.tex} document
+		\item Build that \texttt{root.tex} document
+		\item Add an entry to the \texttt{portfolio.tex} overarching document and compile it
+	\end{enumerate}
+	
+	%% CHANGE THIS: List the used packages
+	\subsection*{Used Packages}
+	\verb|xcolor, fontenc, inputench, babel, minted, tcolorbox, url, hyperref|
+	
+	%% CHANGE THIS: Paste your document preamble inside the latex environment to show its code
+	\subsection*{Preamble}
+	\begin{latex}
+		\usepackage{xcolor} % Required for listings color definitions
+		\definecolor{lightlightgray}{gray}{0.9}
+		
+		%% Specify input format and language
+		\usepackage[T1]{fontenc}
+		\usepackage[utf8]{inputenc}
+		\usepackage[english]{babel}
+		
+		%% Load the minted package, for code listings formatting
+		%% WARNING: -shell-escape latex build option required
+		% Spacing bug and fix: https://tex.stackexchange.com/questions/325939/unwanted-indentation-with-mintinline-possible-bug
+		\usepackage[outputdir=./build]{minted} % Automatically loads etoolbox
+		\setminted[latex]{breaklines=True} % Enable line-breaking
+		%\setminted[latex]{key=value} % Add global language options
+		
+		%% use tcolorbox for pretty frames around the code
+		\usepackage{tcolorbox}
+		\tcbuselibrary{minted, skins, breakable}
+		
+		\newtcblisting{latex}{
+			listing engine = minted,
+			colback = lightlightgray, 
+			colframe = black!70,
+			listing only,
+			minted style = default,
+			minted language = latex,
+			left = 1mm,
+			breakable, % Options for breaking listing longer than one page
+			enhanced jigsaw,
+		}
+		
+		
+		%% Define URL format
+		\usepackage[hyphens]{url}
+		\usepackage{hyperref}
+		\hypersetup{
+			colorlinks=true,
+			citecolor=black,
+			filecolor=black,
+			linkcolor=blue,
+			urlcolor=blue
+		}
+		
+		\setlength\parindent{0pt} % Disable paragraph indent
+	\end{latex}
+	
+	\subsection*{Document}
+	\begin{latex}
+			\documentclass{article}
+			
+			\usepackage[a4paper, total={7in, 9in}]{geometry}
+			\pagestyle{empty} % Prevent relative page numbers
+			
+			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			%% Default preamble 
+			\input{../default-setup-2}
+			
+			
+			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			%% Example-specific packages
+			
+			
+			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			%% Example-specific preamble
+			
+			
+			\begin{document}
+		
+			\section*{<example-title>}
+			
+			\subsection*{Description}
+			<a-few-words-on-the-example>
+			
+			\subsection*{Sources}
+			\textit{<add reference sources here>}
+			\url{<or paste a url>}
+			
+			\subsection*{Used Packages}
+			\verb|<state-the-required-packages-here|
+			
+			\subsection*{Preamble}
+			\ begin{latex}
+				<paste-the-example-related-preamble-code-here>
+			\ end{latex}
+			
+			\subsection*{Document}
+			\ begin{latex}
+				<paste-the-document-code-here-for-presentation>
+			\ end{latex}
+			
+			\subsection*{Result}
+			<write-the-example-document-code-here-for-compilation>
+			
+			\end{document}
+	\end{latex}
+	
+
+\end{document}

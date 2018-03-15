@@ -5,7 +5,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Default definitions 
-\input{../default-setup-2}
+\input{../default-setup-pythontex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Example-specific packages
@@ -51,10 +51,13 @@ I tried calling using an external bash script to run \verb|pythontex| from withi
 
 \textbf{Note 4}: This document uses the \verb|gnuplot| extension of pgfplots, which requires the \texttt{-shell-escape} build option.
 
+\textbf{Note 5:} Finally, be very careful with multiple installations of \verb|pythontex| in your system. If needed, specify the exact path to the desired pythontex executable.
+
 \subsection*{Sources}
 \url{https://tex.stackexchange.com/questions/397234/how-to-do-mathematical-programming-in-latex?newsletter=1&nlcode=544695%7c921f}\\
-\url{https://www.ctan.org/tex-archive/macros/latex/contrib/pythontex}
-\url{http://tug.ctan.org/tex-archive/macros/latex/contrib/minted/minted.pdf}
+\url{https://www.ctan.org/tex-archive/macros/latex/contrib/pythontex}\\
+\url{http://tug.ctan.org/tex-archive/macros/latex/contrib/minted/minted.pdf}\\
+\url{https://github.com/gpoore/pythontex/issues/97}
 
 \subsection*{Used Packages}
 \verb|graphicx|

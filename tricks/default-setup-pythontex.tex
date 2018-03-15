@@ -6,14 +6,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
-%% Load the minted package, for code listings formatting
+
+%% Include minted for source code highlighting
 %% WARNING: -shell-escape latex build option required
 % Spacing bug and fix: https://tex.stackexchange.com/questions/325939/unwanted-indentation-with-mintinline-possible-bug
-\usepackage[outputdir=./build]{minted} % Automatically loads etoolbox
-\setminted[latex]{breaklines=True} % Enable line-breaking
-%\setminted[latex]{key=value} % Add global language options
-
-%% use tcolorbox for pretty frames around the code
 \usepackage{tcolorbox}
 \tcbuselibrary{minted, skins, breakable}
 
@@ -29,6 +25,9 @@
 	enhanced jigsaw,
 }
 
+\usepackage{minted} % Automatically loads etoolbox
+\setminted[latex]{breaklines=True} % Enable line-breaking
+%\setminted[latex]{key=value} % Add global language options
 
 %% Define URL format
 \usepackage[hyphens]{url}
