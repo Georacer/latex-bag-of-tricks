@@ -9,14 +9,16 @@
 %% Load the minted package, for code listings formatting
 %% WARNING: -shell-escape latex build option required
 % Spacing bug and fix: https://tex.stackexchange.com/questions/325939/unwanted-indentation-with-mintinline-possible-bug
-\usepackage[outputdir=./build]{minted} % Automatically loads etoolbox
+%\usepackage[outputdir=build]{minted} % Automatically loads etoolbox.  Does NOT work when I use \newtcbinputlisting to input a file from the same directory
+\usepackage{minted} % Automatically loads etoolbox
 \setminted[latex]{breaklines=True} % Enable line-breaking
 %\setminted[latex]{key=value} % Add global language options
 
 %% use tcolorbox for pretty frames around the code
 \usepackage{tcolorbox}
-\tcbuselibrary{minted, skins, breakable}
+\tcbuselibrary{minted, skins, breakable, raster, listings}
 
+% Define a latex environment
 \newtcblisting{latex}{
 	listing engine = minted,
 	colback = lightlightgray, 
@@ -29,6 +31,19 @@
 	enhanced jigsaw,
 }
 
+% Define a latex file input
+\newtcbinputlisting{\latexFile}[1]{%
+	listing engine = minted,
+	colback = lightlightgray, 
+	colframe = black!70,
+	listing only,
+	minted style = default,
+	minted language = latex,
+	left = 1mm,
+	breakable, % Options for breaking listing longer than one page
+	enhanced jigsaw,
+	listing file = {#1},
+}
 
 %% Define URL format
 \usepackage[hyphens]{url}
